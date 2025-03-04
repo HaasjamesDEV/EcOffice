@@ -23,7 +23,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="zmfI66XZxZjJ3lZ3gCG1-1" value="Recuperación contraseña" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="343" y="320" width="92" height="40" as="geometry" />
+          <mxGeometry x="379" y="320" width="92" height="40" as="geometry" />
         </mxCell>
         <mxCell id="zmfI66XZxZjJ3lZ3gCG1-2" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="6k7u9zJmHzbF-LpgPIJx-1" target="zmfI66XZxZjJ3lZ3gCG1-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
