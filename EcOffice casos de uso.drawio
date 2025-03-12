@@ -424,17 +424,23 @@
         <mxCell id="ShXuwQ5tJ1fE1ABgl12t-117" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="440" y="3310" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="4OoYHoueIrHBc950rIOe-1" value="Login" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="4OoYHoueIrHBc950rIOe-1" value="Login" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="465" y="2980" width="65" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="4OoYHoueIrHBc950rIOe-3" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="ShXuwQ5tJ1fE1ABgl12t-98" target="4OoYHoueIrHBc950rIOe-1">
+        <mxCell id="4OoYHoueIrHBc950rIOe-3" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="ShXuwQ5tJ1fE1ABgl12t-98" target="4OoYHoueIrHBc950rIOe-1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="520" y="2920" as="sourcePoint" />
             <mxPoint x="440" y="2980" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="4OoYHoueIrHBc950rIOe-5" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="4OoYHoueIrHBc950rIOe-5" value="&amp;lt;&amp;lt;extend&amp;gt;&amp;gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="495" y="2940" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yYTDJAalvLS_lQgFWACs-3" value="" style="html=1;shadow=0;dashed=0;align=center;verticalAlign=middle;shape=mxgraph.arrows2.arrow;dy=0.6;dx=40;notch=0;fillColor=light-dark(#000000,var(--ge-dark-color, #121212));" vertex="1" parent="1">
+          <mxGeometry x="193" y="3765.62" width="97" height="28.75" as="geometry" />
+        </mxCell>
+        <mxCell id="yYTDJAalvLS_lQgFWACs-4" value="&lt;font size=&quot;3&quot;&gt;INICIO&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="3744.99" width="110" height="70.01" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
