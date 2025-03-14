@@ -1,12 +1,14 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 export function Perfil({ navigation }) {
   return (
+    <SafeAreaView style={styles.safecontainer}>
+      <Image source={require('../img/logo_tres-removebg-preview.png')} style={styles.logo} />
+
     <View style={styles.container}>
-      {/* Imagen de perfil */}
-        <Image source={require('../img/logo_tres-removebg-preview.png')} style={styles.logo} />
+     
 
       {/* Información del usuario */}
       <Text style={styles.username}>Nombre de Usuario</Text>
@@ -32,17 +34,21 @@ export function Perfil({ navigation }) {
         
       </View>
     </View>
+    </SafeAreaView>
   );
 }
 
 
 const styles = StyleSheet.create({
-  container: {
+  safeContainer: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  container: {
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f5f5f5",
-    marginBottom: 150,
+    marginTop: 72,
   },
   avatar: {
     width: 120,
@@ -51,10 +57,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logo: {
-    width: 300,
-    height: 300,
+    width: 200,
+    height: 200,
     resizeMode: 'contain',
-    marginBottom: 50,
+    marginTop: 30,
+    marginLeft: 96,
   },
   username: {
     fontSize: 22,

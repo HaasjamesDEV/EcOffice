@@ -1,33 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, SafeAreaView, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
 
-
-export function Ranking({navigation}) {
+export function Home() {
   return (
     <SafeAreaView style={styles.safeContainer}>
-      <TouchableOpacity
-              style={styles.buttonAtras}
-              onPress={() =>navigation.goBack()}
-              >
-                <Ionicons name= 'chevron-back-circle'  color="gray" size={30}/>
-                
-      </TouchableOpacity>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Image source={require('../img/logo_tres-removebg-preview.png')} style={styles.logo} />
         
         <View style={styles.container}>
-          <Text style={styles.title}>Ranking de Usuarios</Text>
-          <Text style={styles.description}>Consulta el top de usuarios con más puntos acumulados.</Text>
+          <Text style={styles.title}>Bienvenido a la App</Text>
+          <Text style={styles.description}>Descubre cómo usar la aplicación de manera sencilla y eficiente.</Text>
           
-          {rankingData.map((user, index) => (
-            <View key={index} style={[styles.rankContainer, index < 3 && styles.topThree]}>
-              <Ionicons name="trophy" size={28} color={index === 0 ? "#FFD700" : index === 1 ? "#C0C0C0" : "#CD7F32"} style={styles.icon} />
+          {sections.map((section, index) => (
+            <View key={index} style={styles.sectionContainer}>
+              <Ionicons name={section.icon} size={28} color="#F4A261" style={styles.icon} />
               <View style={styles.textContainer}>
-                <Text style={styles.rank}>{`#${index + 1}`}</Text>
-                <Text style={styles.username}>{user.name}</Text>
-                <Text style={styles.points}>{`${user.points} puntos`}</Text>
+                <Text style={styles.subtitle}>{section.title}</Text>
+                <Text style={styles.text}>{section.description}</Text>
               </View>
             </View>
           ))}
@@ -37,12 +27,13 @@ export function Ranking({navigation}) {
   );
 }
 
-const rankingData = [
-  { name: "Ana López", points: 1500 },
-  { name: "Carlos Pérez", points: 1400 },
-  { name: "María García", points: 1300 },
-  { name: "Luis Fernández", points: 1200 },
-  { name: "Sofía Romero", points: 1100 },
+const sections = [
+  { icon: "map", title: "Mapa", description: "Consulta las papeleras cercanas y su ubicación en la oficina." },
+  { icon: "list", title: "Listado", description: "Revisa los productos comprados y su destino de desecho." },
+  { icon: "person", title: "Perfil", description: "Consulta tu información personal y tus puntos acumulados." },
+  { icon: "qr-code", title: "QR Web", description: "Escanea el código QR para acceder a funciones web adicionales." },
+  { icon: "shield-checkmark", title: "Política de Privacidad", description: "Conoce cómo protegemos tus datos personales." },
+  { icon: "cart", title: "Enlace Tienda", description: "Descubre cómo comprar productos con beneficios." }
 ];
 
 const styles = StyleSheet.create({
@@ -78,10 +69,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 20,
   },
-  rankContainer: {
+  sectionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FAF3E0',
+    backgroundColor: '#FFEBCD',
     padding: 15,
     borderRadius: 10,
     width: '100%',
@@ -92,30 +83,20 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  topThree: {
-    backgroundColor: '#FFEBCD',
-  },
   icon: {
     marginRight: 15,
   },
   textContainer: {
     flexShrink: 1,
   },
-  rank: {
+  subtitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#444',
   },
-  username: {
-    fontSize: 16,
-    color: '#333',
-  },
-  points: {
+  text: {
     fontSize: 14,
     color: '#666',
-  },
-  buttonAtras:{
-    marginTop:50,
-    marginLeft:10,
+    flexShrink: 1,
   },
 });

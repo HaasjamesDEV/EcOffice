@@ -9,7 +9,7 @@ import { Carga } from './components/Carga';
 import { Listado } from './components/Listado';
 import { Perfil } from './components/Perfil';
 import { Mapa } from './components/Mapa';
-import { Main } from './components/Main';
+import { Home } from './components/Home';
 import {EnviarEmail} from './components/EnviarEmail';
 import {RecuperarContrasenia} from './components/RecuperarContrasenia';
 import {Ranking} from './components/Ranking';
@@ -41,7 +41,7 @@ export default function App() {
 
           <Stack.Screen name="Mapa" component={Mapa} options={{ headerShown: false }} />
 
-          <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           
           <Stack.Screen name="EnviarEmail" component={EnviarEmail} options={{ headerShown: false }} />
           

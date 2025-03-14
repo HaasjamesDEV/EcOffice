@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { Mapa } from '../components/Mapa';  
 import { Listado } from '../components/Listado';  
-import { Main } from '../components/Main';  
+import { Home } from '../components/Home';  
 import { Perfil } from '../components/Perfil';  
 
 const Tab = createBottomTabNavigator();
@@ -11,15 +11,15 @@ const Tab = createBottomTabNavigator();
 export function Navigation() {
   return (
     <Tab.Navigator
-      initialRouteName="Main"
+      initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: '#F4A261',
         tabBarInactiveTintColor: 'gray',
       }}
     >
       <Tab.Screen
-        name="Main"
-        component={Main}
+        name="Home"
+        component={Home}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons

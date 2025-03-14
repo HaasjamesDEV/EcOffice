@@ -1,23 +1,41 @@
-import React from 'react';
-import { View, Text, StyleSheet,TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Switch, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native';
 
+export function Configuracion({ navigation }) {
+  const [notificaciones, setNotificaciones] = useState(true);
+  const [modoOscuro, setModoOscuro] = useState(false);
 
-export function Configuracion({navigation}) {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <TouchableOpacity
-      style={styles.buttonAtras}
-      onPress={() =>navigation.navigate('Navigation')}
-      >
-        <Ionicons name= 'chevron-back-circle'  color="gray" size={30}/>
-        
+        style={styles.buttonAtras}
+        onPress={() => navigation.goBack()}>
+        <Ionicons name='chevron-back-circle' color='gray' size={30} />
       </TouchableOpacity>
-    <View style={styles.container}>
       
-      <Text style={styles.text}>Pantalla de Configuracion.</Text>
-    </View>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Configuración</Text>
+          <Text style={styles.description}>Personaliza la experiencia según tus preferencias.</Text>
+          
+          <View style={styles.optionContainer}>
+            <Text style={styles.optionText}>Notificaciones</Text>
+            <Switch
+              value={notificaciones}
+              onValueChange={setNotificaciones}
+            />
+          </View>
+          
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("")}
+          >
+            <Text style={styles.buttonText}>Cerrar Sesión</Text>
+          </TouchableOpacity>
+
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -27,18 +45,63 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
+  scrollContainer: {
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
+    paddingBottom: 50,
   },
-  text: {
-    fontSize: 20,
+  container: {
+    width: '90%',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  description: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  optionContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#FFEBCD',
+    padding: 15,
+    borderRadius: 10,
+    width: '100%',
+    marginVertical: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  optionText: {
+    fontSize: 16,
     color: '#333',
   },
-  buttonAtras:{
-    marginTop:50,
-    marginLeft:10,
+  buttonAtras: {
+    marginTop: 50,
+    marginLeft: 10,
+  },
+  button: {
+    flexDirection: "row",
+    backgroundColor: "#D60023",
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 400,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });

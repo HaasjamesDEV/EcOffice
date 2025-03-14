@@ -1,22 +1,21 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, TextInput, FlatList, TouchableOpacity, Text, View, Image } from "react-native";
+import { 
+  SafeAreaView, Dimensions, StyleSheet, TextInput, 
+  FlatList, TouchableOpacity, Text, View, Image 
+} from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 
-
-// Datos de ejemplo para los productos
 const productos = [
   { id: "1", nombre: "Producto 1", descripcion: "Descripción del producto 1", colorPapelera: "Azul" },
   { id: "2", nombre: "Producto 2", descripcion: "Descripción del producto 2", colorPapelera: "Rojo" },
   { id: "3", nombre: "Producto 3", descripcion: "Descripción del producto 3", colorPapelera: "Verde" },
   { id: "4", nombre: "Producto 4", descripcion: "Descripción del producto 4", colorPapelera: "Amarillo" },
-  // Agrega más productos según sea necesario
 ];
 
 export function Listado() {
-  const [busqueda, setBusqueda] = useState(""); // Estado para el buscador
-  const [productoSeleccionado, setProductoSeleccionado] = useState(null); // Estado para el producto seleccionado
+  const [busqueda, setBusqueda] = useState("");
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
-  // Filtrar productos según la búsqueda
   const productosFiltrados = productos.filter((producto) =>
     producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
   );
@@ -26,31 +25,25 @@ export function Listado() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, StyleSheet.absoluteFillObject]}>
       <Image source={require('../img/logo_tres-removebg-preview.png')} style={styles.logo} />
-      
+
       <View style={styles.buscadorContainer}>
-       
         <TextInput
           style={styles.buscador}
           placeholder="Buscar producto"
           value={busqueda}
-          onChangeText={(texto) => setBusqueda(texto)} // Actualizar el texto del buscador
+          onChangeText={setBusqueda}
         />
-        <TouchableOpacity
-        style={styles.button}
-        >
-          <Ionicons name= 'search-outline'  color="white" size={30}/>
-          
+        <TouchableOpacity style={styles.button}>
+          <Ionicons name="search-outline" color="white" size={24} />
         </TouchableOpacity>
-        
-
       </View>
-      
-      {/* Lista de productos */}
+
       <FlatList
         data={productosFiltrados}
         keyExtractor={(item) => item.id}
+        keyboardShouldPersistTaps="handled"
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.producto} onPress={() => mostrarDetalles(item)}>
             <Text style={styles.nombreProducto}>{item.nombre}</Text>
@@ -58,7 +51,6 @@ export function Listado() {
         )}
       />
 
-      {/* Detalles del producto seleccionado */}
       {productoSeleccionado && (
         <View style={styles.detallesProducto}>
           <Text style={styles.titulo}>Descripción:</Text>
@@ -76,31 +68,36 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     paddingHorizontal: 15,
+    backgroundColor: "white", // Opcional: evitar zonas negras en dispositivos grandes
   },
-  buscadorContainer:{
-    height: 40,
+  buscadorContainer: {
+    height: 50,
     borderColor: "#ccc",
     borderWidth: 1,
     marginBottom: 15,
-    paddingLeft: 10,
-    borderRadius: 5,
+    paddingHorizontal: 10,
+    borderRadius: 20,
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  button:{
-    height:32,
-    width:45,
+  buscador: {
+    flex: 1,
+    fontSize: 16,
+  },
+  button: {
     backgroundColor: '#F4A261',
-    borderRadius:15,
-    paddingLeft:8,
-    marginTop:3,
-    marginLeft:190,
+    borderRadius: 20,
+    padding: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
   logo: {
     width: 200,
     height: 200,
     resizeMode: 'contain',
-    marginTop: 30,
-    marginLeft: 75,
+    marginTop: 10,
+    alignSelf: "center",
   },
   producto: {
     backgroundColor: "#f0f0f0",
@@ -113,7 +110,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   detallesProducto: {
-    backgroundColor: '#FAF3E0',
+    backgroundColor: '#FFEBCD',
     padding: 15,
     borderRadius: 10,
     width: '100%',
@@ -129,3 +126,5 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+export default Listado;

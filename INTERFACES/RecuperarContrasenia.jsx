@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from '@expo/vector-icons';
 
-export function RecuperarContrasenia() {
+
+export function RecuperarContrasenia({navigation}) {
   const [email, setEmail] = useState("");
 
   const handleResetPassword = async () => {
@@ -18,6 +20,13 @@ export function RecuperarContrasenia() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <TouchableOpacity
+              style={styles.buttonAtras}
+              onPress={() =>navigation.navigate('Login')}
+              >
+                <Ionicons name= 'chevron-back-circle'  color="gray" size={30}/>
+                
+      </TouchableOpacity>
       <View style={styles.container}>
         <Image source={require("../img/logo_tres-removebg-preview.png")} style={styles.logo} />
 
@@ -84,5 +93,9 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  buttonAtras:{
+    marginTop:50,
+    marginLeft:10,
   },
 });
