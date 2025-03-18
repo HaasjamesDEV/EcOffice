@@ -59,6 +59,10 @@ export function Listado() {
           <Text>{productoSeleccionado.colorPapelera}</Text>
         </View>
       )}
+
+      <TouchableOpacity style={styles.botonFijo}>
+        <Ionicons name="barcode-outline" size={30} color="white" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -68,7 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     paddingHorizontal: 15,
-    backgroundColor: "white", // Opcional: evitar zonas negras en dispositivos grandes
+    backgroundColor: "white", 
   },
   buscadorContainer: {
     height: 50,
@@ -125,6 +129,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 5,
   },
+  botonFijo: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#F4A261',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
+  }
 });
 
 export default Listado;
