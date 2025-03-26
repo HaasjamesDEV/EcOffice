@@ -1,21 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
-import { Registro } from '../components/Registro.jsx';
 
-
-export function Login({navigation}) {
+export function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    // Simulación de llamada a la API para obtener usuarios registrados
+    fetch('http://10.14.205.50:3000/usuario')
+      .then(response => response.json())
+      .then(data => setUsers(data))
+      .catch(error => console.error('Error al obtener usuarios:', error));
+  }, []);
 
   const logicaLogin = () => {
-    // Aquí puedes agregar la lógica de autenticación
     if (!email || !password) {
       Alert.alert('Por favor ingresa tu correo y contraseña');
+    } else if (!email.includes('@') || !email.includes('.com')) {
+      Alert.alert('Correo inválido');
     } else {
-      Alert.alert('¡Iniciado sesión con éxito!');
-      navigation.navigate('Navigation')
+      // Comprobar si el usuario está registrado
+      const userFound = users.find(user => user.correo === email && user.contrasenia === password);
+      
+      if (userFound) {
+        Alert.alert('¡Iniciado sesión con éxito!');
+        navigation.navigate('Navigation');
+      } else {
+        Alert.alert('Correo o contraseña incorrectos');
+      }
     }
   };
 
@@ -31,7 +45,6 @@ export function Login({navigation}) {
           <View style={styles.innerContainer}>
             <Text style={styles.title}>Iniciar sesión</Text>
 
-            {/* Campo de correo */}
             <TextInput
               style={styles.input}
               placeholder="Correo electrónico"
@@ -41,7 +54,6 @@ export function Login({navigation}) {
               onChangeText={setEmail}
             />
 
-            {/* Campo de contraseña */}
             <TextInput
               style={styles.input}
               placeholder="Contraseña"
@@ -51,22 +63,17 @@ export function Login({navigation}) {
               onChangeText={setPassword}
             />
 
-            {/* Botón de inicio de sesión */}
             <TouchableOpacity style={styles.button} onPress={logicaLogin}>
               <Text style={styles.buttonText}>Iniciar sesión</Text>
             </TouchableOpacity>
 
-            {/*Recuperar contraseña*/}
-            <TouchableOpacity onPress={() => navigation.navigate('RecuperarContrasenia')}> 
+            <TouchableOpacity onPress={() => navigation.navigate('RecuperarContrasenia')}>
               <Text style={styles.recuperarContrasenia}>Recuperar contraseña</Text>
             </TouchableOpacity>
 
-
-            {/* Enlace para registrarse */}
             <TouchableOpacity onPress={() => navigation.navigate('Registro')}>
               <Text style={styles.registerText}>¿No tienes una cuenta? Regístrate</Text>
             </TouchableOpacity>
-
           </View>
         </ScrollView>
       </SafeAreaView>

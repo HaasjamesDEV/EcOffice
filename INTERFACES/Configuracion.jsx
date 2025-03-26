@@ -34,6 +34,13 @@ export function Configuracion({ navigation }) {
             <Text style={styles.buttonText}>Cerrar Sesión</Text>
           </TouchableOpacity>
 
+          <TouchableOpacity 
+          style={styles.cerrarSesion}
+          //On press -> funcionalidad cerar sesión
+          >
+           <Text style={styles.buttonText}></Text>
+          </TouchableOpacity>
+
         </View>
       </ScrollView>
     </SafeAreaView>

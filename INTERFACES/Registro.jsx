@@ -11,12 +11,25 @@ export function Registro({navigation}) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegister = () => {
+  registro 
+const handleRegister = () => {
     // Aquí puedes agregar la lógica de registro
     if (!name || !email || !password || !confirmPassword) {
       Alert.alert('Por favor completa todos los campos');
     } else if (password !== confirmPassword) {
       Alert.alert('Las contraseñas no coinciden');
+    } else if(!email.includes('@')){
+      Alert.alert('Correo inválido');
+    } else if(!email.includes('.com' || '.es')){
+      Alert.alert('Correo inválido');
+    }else if(password.length < 8){
+      Alert.alert('La contraseña debe tener al menos 8 caracteres');
+    } else if(password.includes(!/[A-Z]/)){
+      Alert.alert('La contraseña debe tener al menos una letra mayúscula');
+    } else if(password.includes(!/[0-9]/)){
+      Alert.alert('La contraseña debe tener al menos un número');
+    } else if(password.includes(!/[!@#$%^&*]/)){
+      Alert.alert('La contraseña debe tener al menos un caracter especial');
     } else {
       Alert.alert('¡Registro exitoso!');
     }

@@ -60,7 +60,10 @@ export function Listado() {
         </View>
       )}
 
-      <TouchableOpacity style={styles.botonFijo}>
+      <TouchableOpacity 
+        style={styles.botonFijo} 
+        //on press -> funcionalidad lector codigo barras
+      >
         <Ionicons name="barcode-outline" size={30} color="white" />
       </TouchableOpacity>
     </SafeAreaView>
