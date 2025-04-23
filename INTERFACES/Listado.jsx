@@ -1,6 +1,8 @@
-// Listado.js
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, FlatList, SafeAreaView, Image } from 'react-native';
+import React, { useState } from "react";
+import { 
+  SafeAreaView, Dimensions, StyleSheet, TextInput, 
+  FlatList, TouchableOpacity, Text, View, Image 
+} from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 
 const productos = [
@@ -10,7 +12,7 @@ const productos = [
   { id: "4", nombre: "Producto 4", descripcion: "Descripción del producto 4", colorPapelera: "Amarillo" },
 ];
 
-export function Listado({ navigation }) {
+export function Listado() {
   const [busqueda, setBusqueda] = useState("");
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
@@ -23,7 +25,7 @@ export function Listado({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, StyleSheet.absoluteFillObject]}>
       <Image source={require('../img/logo_tres-removebg-preview.png')} style={styles.logo} />
 
       <View style={styles.buscadorContainer}>
@@ -41,6 +43,7 @@ export function Listado({ navigation }) {
       <FlatList
         data={productosFiltrados}
         keyExtractor={(item) => item.id}
+        keyboardShouldPersistTaps="handled"
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.producto} onPress={() => mostrarDetalles(item)}>
             <Text style={styles.nombreProducto}>{item.nombre}</Text>
@@ -57,12 +60,9 @@ export function Listado({ navigation }) {
         </View>
       )}
 
-      <TouchableOpacity
-        style={styles.botonFijo}
-        onPress={() => {
-          // Navegar a la pantalla de la cámara
-          navigation.navigate('Camara');
-        }}
+      <TouchableOpacity 
+        style={styles.botonFijo} 
+        //on press -> funcionalidad lector codigo barras
       >
         <Ionicons name="barcode-outline" size={30} color="white" />
       </TouchableOpacity>
@@ -73,8 +73,9 @@ export function Listado({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 20,
     paddingHorizontal: 15,
-    backgroundColor: "white",
+    backgroundColor: "white", 
   },
   buscadorContainer: {
     height: 50,
@@ -102,6 +103,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     resizeMode: 'contain',
+    marginTop: 10,
     alignSelf: "center",
   },
   producto: {
