@@ -9,13 +9,15 @@ import { Carga } from './components/Carga';
 import { Listado } from './components/Listado';
 import { Perfil } from './components/Perfil';
 import { Mapa } from './components/Mapa';
-import { Home } from './components/Home';
+import { Main } from './components/Home';
 import {EnviarEmail} from './components/EnviarEmail';
-import {RecuperarContrasenia} from './components/RecuperarContrasenia';
 import {Ranking} from './components/Ranking';
 import {Configuracion} from './components/Configuracion';
 import {Navigation} from './navegation/Navigation';
-
+import { Camara } from './components/Camara';
+import { Qr } from './components/Qr';
+import { puntos } from './components/Qr_puntos';
+import {ListadoEliminacion} from './components/ListadoEliminacion';
 
 
 const Stack = createStackNavigator();
@@ -41,11 +43,9 @@ export default function App() {
 
           <Stack.Screen name="Mapa" component={Mapa} options={{ headerShown: false }} />
 
-          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+          <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
           
           <Stack.Screen name="EnviarEmail" component={EnviarEmail} options={{ headerShown: false }} />
-          
-          <Stack.Screen name="RecuperarContrasenia" component={RecuperarContrasenia} options={{ headerShown: false }} />
 
           <Stack.Screen name="Ranking" component={Ranking} options={{ headerShown: false }} />
 
@@ -53,7 +53,14 @@ export default function App() {
 
           <Stack.Screen name="Navigation" component={Navigation} options={{ headerShown: false }} />
 
+          <Stack.Screen name="Camara" component={Camara} options={{ headerShown: false }} />
 
+          <Stack.Screen name="Qr" component={Qr} options={{ headerShown: false }} />
+
+          <Stack.Screen name="Qr_puntos" component={puntos} options={{ headerShown: false }} />
+
+          <Stack.Screen name="ListadoEliminacion" component={ListadoEliminacion} options={{ headerShown: false }} />
+          
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
