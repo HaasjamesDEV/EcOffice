@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export function Home() {
+export function Main() {
   return (
     <SafeAreaView style={styles.safeContainer}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -26,14 +26,14 @@ export function Home() {
     </SafeAreaView>
   );
 }
-
+//Seccion de ayuda para el usuario
 const sections = [
   { icon: "map", title: "Mapa", description: "Consulta las papeleras cercanas y su ubicación en la oficina." },
   { icon: "list", title: "Listado", description: "Revisa los productos comprados y su destino de desecho." },
   { icon: "person", title: "Perfil", description: "Consulta tu información personal y tus puntos acumulados." },
   { icon: "qr-code", title: "QR Web", description: "Escanea el código QR para acceder a funciones web adicionales." },
   { icon: "shield-checkmark", title: "Política de Privacidad", description: "Conoce cómo protegemos tus datos personales." },
-  { icon: "cart", title: "Enlace Tienda", description: "Descubre cómo comprar productos con beneficios." }
+  { icon: "cart", title: "Enlace Tienda", description: "Descubre cómo comprar productos ecológicos con beneficios." }
 ];
 
 const styles = StyleSheet.create({
@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     resizeMode: 'contain',
-    marginTop: 30,
   },
   title: {
     fontSize: 26,
@@ -72,7 +71,7 @@ const styles = StyleSheet.create({
   sectionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFEBCD',
+    backgroundColor: '#FAF3E0',
     padding: 15,
     borderRadius: 10,
     width: '100%',

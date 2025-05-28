@@ -1,49 +1,64 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
 
+export function Ranking({ navigation }) {
+  const [rankingData, setRankingData] = useState([]); // Estado para almacenar el ranking
 
-export function Ranking({navigation}) {
+  // Hacer la solicitud a la API para obtener el ranking
+  useEffect(() => {
+    fetch('http://192.168.52.46:3000/ranking')  
+      .then((response) => response.json())
+      .then((data) => setRankingData(data))  
+      .catch((error) => console.error('Error al obtener el ranking:', error));
+  }, []); 
+
   return (
     <SafeAreaView style={styles.safeContainer}>
       <TouchableOpacity
-              style={styles.buttonAtras}
-              onPress={() =>navigation.goBack()}
-              >
-                <Ionicons name= 'chevron-back-circle'  color="gray" size={30}/>
-                
+        style={styles.buttonAtras}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="chevron-back-circle" color="gray" size={30} />
       </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Image source={require('../img/logo_tres-removebg-preview.png')} style={styles.logo} />
+        <Image
+          source={require('../img/logo_tres-removebg-preview.png')}
+          style={styles.logo}
+        />
         
         <View style={styles.container}>
           <Text style={styles.title}>Ranking de Usuarios</Text>
-          <Text style={styles.description}>Consulta el top de usuarios con más puntos acumulados.</Text>
+          <Text style={styles.description}>Consulta el top 5 usuarios con más puntos acumulados.</Text>
           
-          {rankingData.map((user, index) => (
-            <View key={index} style={[styles.rankContainer, index < 3 && styles.topThree]}>
-              <Ionicons name="trophy" size={28} color={index === 0 ? "#FFD700" : index === 1 ? "#C0C0C0" : "#CD7F32"} style={styles.icon} />
-              <View style={styles.textContainer}>
-                <Text style={styles.rank}>{`#${index + 1}`}</Text>
-                <Text style={styles.username}>{user.name}</Text>
-                <Text style={styles.points}>{`${user.points} puntos`}</Text>
+          {rankingData.length > 0 ? (
+            rankingData.map((user, index) => (
+              <View
+                key={user.id}  
+                style={[styles.rankContainer, index < 3 && styles.topThree]} 
+              >
+                <Ionicons
+                  name="trophy"
+                  size={28}
+                  color={index === 0 ? '#FFD700' : index === 1 ? '#C0C0C0' : '#CD7F32'}
+                  style={styles.icon}
+                />
+                <View style={styles.textContainer}>
+                  <Text style={styles.rank}>{`#${index + 1}`}</Text>
+                  <Text style={styles.username}>{user.nombre}</Text>
+                  <Text style={styles.points}>{`${user.puntos} puntos`}</Text>
+                </View>
               </View>
-            </View>
-          ))}
+            ))
+          ) : (
+            <Text style={styles.noData}>Cargando ranking...</Text> 
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-const rankingData = [
-  { name: "Ana López", points: 1500 },
-  { name: "Carlos Pérez", points: 1400 },
-  { name: "María García", points: 1300 },
-  { name: "Luis Fernández", points: 1200 },
-  { name: "Sofía Romero", points: 1100 },
-];
 
 const styles = StyleSheet.create({
   safeContainer: {
@@ -114,8 +129,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
-  buttonAtras:{
-    marginTop:50,
-    marginLeft:10,
+  buttonAtras: {
+    marginTop: 50,
+    marginLeft: 10,
+  },
+  noData: {
+    fontSize: 18,
+    color: '#888',
+    marginTop: 20,
   },
 });

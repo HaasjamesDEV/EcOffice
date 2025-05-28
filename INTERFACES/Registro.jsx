@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   Alert, Image, KeyboardAvoidingView, Platform, ScrollView
@@ -16,7 +17,7 @@ export function Registro({ navigation }) {
     var disponible=true;
     try {
       console.log("Dentro de la funcion d verificacion")
-      const response = await fetch(`http://10.0.2.2:3000/usuario/verify?correo=${email}`);
+      const response = await fetch(`http://192.168.52.46:3000/usuario/verify?correo=${email}`);
       const data = await response.json();
 
       if (response.ok && data.exists) {
@@ -71,7 +72,7 @@ export function Registro({ navigation }) {
       } else{
         // Si todo está bien, hacer el registro
         try {
-          const response = await fetch('http://10.0.2.2:3000/usuario', {
+          const response = await fetch('http://192.168.52.46:3000/usuario', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nombre: name, correo: email, contrasenia: password })
@@ -83,9 +84,15 @@ export function Registro({ navigation }) {
           console.log(data)
           console.log(response)
           if (response.ok) {
-            
-            Alert.alert('¡Registro exitoso!', `Usuario creado con ID: ${data.id}`);
-            navigation.navigate('Login');
+            // Guardar los datos del usuario en AsyncStorage
+            await AsyncStorage.setItem('usuario', JSON.stringify({
+              id: data.id,
+              nombre: data.nombre,
+              correo: data.correo
+            }));
+          
+            Alert.alert('¡Registro exitoso!',`Bienvenido/a, ${data.nombre}!`);
+            navigation.navigate('Navigation', { screen: 'Home' });
           } else {
             Alert.alert('Error', 'No se pudo registrar el usuario');
           }
@@ -93,8 +100,10 @@ export function Registro({ navigation }) {
           Alert.alert('Error', 'No se pudo conectar al servidor');
           console.error(error);
         }
-    }
+    
       }
+
+    }
 
       
   };

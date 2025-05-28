@@ -1,68 +1,171 @@
-import React, { useState } from "react";
-import { 
-  SafeAreaView, Dimensions, StyleSheet, TextInput, 
-  FlatList, TouchableOpacity, Text, View, Image 
-} from "react-native";
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, FlatList, SafeAreaView, Image, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
+import { ListadoEliminacion } from './ListadoEliminacion'; // Asegúrate de importar correctamente el componente
+import { Productos } from './Productos';
 
-const productos = [
-  { id: "1", nombre: "Producto 1", descripcion: "Descripción del producto 1", colorPapelera: "Azul" },
-  { id: "2", nombre: "Producto 2", descripcion: "Descripción del producto 2", colorPapelera: "Rojo" },
-  { id: "3", nombre: "Producto 3", descripcion: "Descripción del producto 3", colorPapelera: "Verde" },
-  { id: "4", nombre: "Producto 4", descripcion: "Descripción del producto 4", colorPapelera: "Amarillo" },
-];
-
-export function Listado() {
+export function Listado({ navigation, route }) {
   const [busqueda, setBusqueda] = useState("");
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  const [productos, setProductos] = useState([]); // Inicializado como array vacío en lugar de productosIniciales
+  const [productosAPI, setProductosAPI] = useState([]);
+  // Nuevo estado para los productos de la papelera
+  const [productosPapelera, setProductosPapelera] = useState([]);
+  
+  // Cargar productos de la API
+  useEffect(() => {
+    fetch('http://192.168.52.46:3000/productos')
+      .then(response => response.json())
+      .then(data => {
+        console.log('Productos API cargados:', data.length);
+        setProductosAPI(data);
+      })
+      .catch(error => console.error('Error al cargar productos de API:', error));
+  }, []);
 
+  // Verificar si hay un producto escaneado en la navegación
+  useEffect(() => {
+    if (route.params?.productoEscaneado) {
+      const productoEscaneado = route.params.productoEscaneado;
+      console.log("Producto recibido del escáner:", JSON.stringify(productoEscaneado));
+      mostrarDetallesProductoEscaneado(productoEscaneado);
+    }
+  }, [route.params?.productoEscaneado]);
+
+  // Cargar productos específicos de la papelera cuando hay una ubicación
+  useEffect(() => {
+    if (route.params?.ubicacion) {
+      const { ubicacion } = route.params;
+      console.log('Cargando productos de papelera desde Listado:', ubicacion.id);
+      
+      fetch(`http://192.168.52.46:3000/productos?id_papelera=${ubicacion.id}`) 
+        .then(response => response.json())
+        .then(data => {
+          const productosObtenidos = Array.isArray(data) ? data : [];
+          console.log('Productos papelera obtenidos en Listado:', productosObtenidos.length);
+          setProductosPapelera(productosObtenidos);
+        })
+        .catch(error => {
+          console.error('Error al cargar productos de papelera en Listado:', error);
+        });
+    }
+  }, [route.params?.ubicacion]);
+
+  // Manejar la selección de productos de la lista
+  const mostrarDetalles = (producto) => {
+    setProductoSeleccionado(producto);
+  };
+  
+  // Manejar la visualización del producto escaneado
+  const mostrarDetallesProductoEscaneado = (productoEscaneado) => {
+    // Convertir el producto escaneado al formato esperado por la UI
+    const productoFormateado = {
+      id: productoEscaneado.id,
+      nombre: productoEscaneado.nombre,
+      descripcion: productoEscaneado.descripción || "Sin descripción",
+      colorPapelera: obtenerColorPapelera(productoEscaneado.id_papelera),
+    };
+    
+    // Hack para evitar ids repetidos al escanear el mismo producto varias veces
+    setProductos(prevProductos => {
+      if (prevProductos.some(producto => producto.id === productoFormateado.id)) {
+        productoFormateado.id = `${productoFormateado.id}-${Date.now()}`;
+      }
+      return [...prevProductos, productoFormateado]; 
+    });
+    
+    // Opcional: mostrar un mensaje
+    Alert.alert(
+      'Producto Escaneado', 
+      `Has escaneado: ${productoFormateado.nombre}`
+    );
+  };
+  
+  // Función para obtener el color de la papelera según su ID
+  const obtenerColorPapelera = (idPapelera) => {
+    switch (idPapelera) {
+      case 1: return "Amarilloo";
+      case 2: return "Azull";
+      case 3: return "Verdee";
+      default: return "No especificadoo";
+    }
+  };
+
+  // Filtrado de productos
   const productosFiltrados = productos.filter((producto) =>
     producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
   );
 
-  const mostrarDetalles = (producto) => {
-    setProductoSeleccionado(producto);
-  };
+  // Determinar si mostrar la lista principal o ListadoEliminacion
+  const mostrarListadoEliminacion = route.params?.ubicacion;
 
+  const mostrarInformacion = () => {
+    Alert.alert(
+    '¿Cómo usar el Listado?',
+      `
+🔍 Busca un producto usando la barra superior.
+
+📄 Toca un producto para ver su descripción.
+
+🎨 El color indicado te dice a qué papelera va.
+
+🔲 El botón QR te permite escanear códigos.`,
+      [{ text: 'Entendido', style: 'default' }]
+  );
+  };
   return (
-    <SafeAreaView style={[styles.container, StyleSheet.absoluteFillObject]}>
+    <SafeAreaView style={styles.container}>
+      {/* Botón de información */}
+      <TouchableOpacity style={styles.botonInfo} onPress={mostrarInformacion}>
+        <Ionicons name="information-circle-outline" size={28} color="#F4A261" />
+      </TouchableOpacity>
       <Image source={require('../img/logo_tres-removebg-preview.png')} style={styles.logo} />
 
-      <View style={styles.buscadorContainer}>
-        <TextInput
-          style={styles.buscador}
-          placeholder="Buscar producto"
-          value={busqueda}
-          onChangeText={setBusqueda}
+      {!mostrarListadoEliminacion && (
+        <>
+          <View style={styles.buscadorContainer}>
+            <TextInput
+              style={styles.buscador}
+              placeholder="Buscar producto"
+              value={busqueda}
+              onChangeText={setBusqueda}
+            />
+            <TouchableOpacity style={styles.button}>
+              <Ionicons name="search-outline" color="white" size={24} />
+            </TouchableOpacity>
+          </View>
+
+        <Productos
+          productos={productosFiltrados}
+          loading={false}
+          onItemPress={mostrarDetalles}
+          titulo="Productos disponibles"
+          subtitulo="Toca un producto para ver detalles"
         />
-        <TouchableOpacity style={styles.button}>
-          <Ionicons name="search-outline" color="white" size={24} />
-        </TouchableOpacity>
-      </View>
 
-      <FlatList
-        data={productosFiltrados}
-        keyExtractor={(item) => item.id}
-        keyboardShouldPersistTaps="handled"
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.producto} onPress={() => mostrarDetalles(item)}>
-            <Text style={styles.nombreProducto}>{item.nombre}</Text>
-          </TouchableOpacity>
-        )}
-      />
-
-      {productoSeleccionado && (
-        <View style={styles.detallesProducto}>
-          <Text style={styles.titulo}>Descripción:</Text>
-          <Text>{productoSeleccionado.descripcion}</Text>
-          <Text style={styles.titulo}>Color de la Papelera:</Text>
-          <Text>{productoSeleccionado.colorPapelera}</Text>
-        </View>
+          {/* Detalles del producto seleccionado */}
+          {productoSeleccionado && (
+            <View style={styles.detallesProducto}>
+              <Text style={styles.tituloDetalle}>{productoSeleccionado.nombre}</Text>
+              
+              <Text style={styles.titulo}>Descripción:</Text>
+              <Text>{productoSeleccionado.descripcion}</Text>
+              
+              <Text style={styles.titulo}>Color de la Papelera:</Text>
+              <View style={styles.colorContainer}>
+                <View style={[styles.colorIndicator, { backgroundColor: getColorCode(productoSeleccionado.colorPapelera) }]} />
+                <Text>{productoSeleccionado.colorPapelera}</Text>
+              </View>
+            </View>
+          )}
+        </>
       )}
 
-      <TouchableOpacity 
-        style={styles.botonFijo} 
-        //on press -> funcionalidad lector codigo barras
+      {/* Botón para escanear código de barras */}
+      <TouchableOpacity
+        style={styles.botonFijo}
+        onPress={() => navigation.navigate('Camara')}
       >
         <Ionicons name="barcode-outline" size={30} color="white" />
       </TouchableOpacity>
@@ -70,12 +173,21 @@ export function Listado() {
   );
 }
 
+// Función para convertir nombre de color a código hex
+function getColorCode(colorName) {
+  switch (colorName?.toLowerCase()) {
+    case 'azull': return '#1E90FF';
+    case 'amarilloo': return '#FFD700';
+    case 'verdee': return '#32CD32';
+    default: return '#CCCCCC';
+  }
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
     paddingHorizontal: 15,
-    backgroundColor: "white", 
+    backgroundColor: "white",
   },
   buscadorContainer: {
     height: 50,
@@ -103,7 +215,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     resizeMode: 'contain',
-    marginTop: 10,
     alignSelf: "center",
   },
   producto: {
@@ -131,6 +242,13 @@ const styles = StyleSheet.create({
   titulo: {
     fontWeight: "bold",
     marginBottom: 5,
+    marginTop: 10,
+  },
+  tituloDetalle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 12,
+    color: '#F4A261',
   },
   botonFijo: {
     position: 'absolute',
@@ -143,7 +261,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 5,
-  }
+  },
+  emptyMessage: {
+    textAlign: 'center',
+    padding: 20,
+    color: '#666',
+  },
+  colorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  colorIndicator: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    marginRight: 8,
+  },
+  botonInfo: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    padding: 10,
+  },
 });
 
 export default Listado;

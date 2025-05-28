@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Login } from '../components/Login.jsx';
-
+//Pagina para iniciar la aplicación, con botones de Login y Registro
 export function Inicio({navigation}) {
   return (
     <SafeAreaProvider>

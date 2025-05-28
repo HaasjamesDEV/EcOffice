@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';  // Importar AsyncStorage
 
 export function Configuracion({ navigation }) {
   const [notificaciones, setNotificaciones] = useState(true);
   const [modoOscuro, setModoOscuro] = useState(false);
+
+  // Función para cerrar sesión
+  const cerrarSesion = async () => {
+    try {
+      // Elimina el token o los datos de la sesión
+      await AsyncStorage.removeItem('userToken'); 
+
+      // Redirige a la pantalla de login
+      navigation.navigate('Inicio');  
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.safeContainer}>
@@ -20,27 +34,20 @@ export function Configuracion({ navigation }) {
           <Text style={styles.description}>Personaliza la experiencia según tus preferencias.</Text>
           
           <View style={styles.optionContainer}>
-            <Text style={styles.optionText}>Notificaciones</Text>
+            <Text style={styles.optionText}>Notificacioness</Text>
             <Switch
               value={notificaciones}
               onValueChange={setNotificaciones}
             />
           </View>
-          
+
+          {/* Botón de Cerrar Sesión */}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("")}
+            onPress={cerrarSesion} 
           >
             <Text style={styles.buttonText}>Cerrar Sesión</Text>
           </TouchableOpacity>
-
-          <TouchableOpacity 
-          style={styles.cerrarSesion}
-          //On press -> funcionalidad cerar sesión
-          >
-           <Text style={styles.buttonText}></Text>
-          </TouchableOpacity>
-
         </View>
       </ScrollView>
     </SafeAreaView>

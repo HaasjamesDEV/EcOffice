@@ -13,7 +13,7 @@ export function Carga({ navigation }) {
     //temporizador para navegar a la pantalla 'Listado'
     const timer = setTimeout(() => {
       navigation.navigate('Inicio'); 
-    }, 3000); // 1000 ms = 1 segundos
+    }, 1000); // 1000 ms = 1 segundos
 
     // Limpiamos el temporizador si el componente se desmonta antes de que termine el tiempo
     return () => clearTimeout(timer);
@@ -33,7 +33,7 @@ export function Carga({ navigation }) {
       <LottieView
         source={leaves}
         autoPlay
-        loop={true} // Mantener la animación en un ciclo continuo
+        loop={true} 
         style={[styles.animation, { width, height }]}
         resizeMode="cover"
       />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Image, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function Login({ navigation }) {
   const [email, setEmail] = useState('');
@@ -8,25 +9,30 @@ export function Login({ navigation }) {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Simulación de llamada a la API para obtener usuarios registrados
-    fetch('http://10.14.205.50:3000/usuario')
+    fetch('http://192.168.52.46:3000/usuario')
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error al obtener usuarios:', error));
   }, []);
 
-  const logicaLogin = () => {
+  const logicaLogin = async () => {
     if (!email || !password) {
       Alert.alert('Por favor ingresa tu correo y contraseña');
     } else if (!email.includes('@') || !email.includes('.com')) {
       Alert.alert('Correo inválido');
     } else {
-      // Comprobar si el usuario está registrado
       const userFound = users.find(user => user.correo === email && user.contrasenia === password);
-      
       if (userFound) {
         Alert.alert('¡Iniciado sesión con éxito!');
-        navigation.navigate('Navigation');
+
+        // Guardar datos del usuario en AsyncStorage
+        await AsyncStorage.setItem('usuario', JSON.stringify({
+          nombre: userFound.nombre,
+          correo: userFound.correo
+        }));
+
+        // Ir directamente a la pantalla Perfil
+        navigation.navigate('Navigation', { screen: 'Home' });
       } else {
         Alert.alert('Correo o contraseña incorrectos');
       }
@@ -80,6 +86,7 @@ export function Login({ navigation }) {
     </KeyboardAvoidingView>
   );
 }
+
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -143,5 +150,5 @@ const styles = StyleSheet.create({
     color: '#007BFF',
     fontSize: 16,
     textAlign: 'center',
-  },
+},
 });
